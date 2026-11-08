@@ -1,0 +1,21 @@
+Fonts used on emineo.cz
+
+  fraunces-roman.woff2, fraunces-italic.woff2
+      Fraunces, by Undercase Type and contributors
+      https://github.com/undercasetype/Fraunces
+
+  instrument-sans.woff2
+      Instrument Sans, by Rodrigo Fuenzalida and Jordan Egstad for Instrument
+      https://github.com/Instrument/instrument-sans
+
+Both are licensed under the SIL Open Font License 1.1. The full licence texts are in
+OFL-Fraunces.txt and OFL-InstrumentSans.txt next to this file.
+
+The files here are modified versions of the originals. They were cut down to the characters
+and weights this website needs (Latin with Czech and other central European letters) so that
+pages load quickly:
+
+  Fraunces           weights 300 to 600, optical size fixed at 72, softness 50, "wonky" forms off
+  Instrument Sans    weights 400 to 700, normal width
+
+The fonts are served from this website itself. Nothing is loaded from a font provider.

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://emineo.cz/sitemap.xml

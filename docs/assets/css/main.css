@@ -1,0 +1,932 @@
+/* ==========================================================================
+   Emineo, z. s. | styles for the whole site
+   One plain stylesheet. There is no build step: edit, save, reload.
+
+   1 Fonts   2 Colours and sizes   3 Base   4 Layout   5 Header
+   6 Home hero and map   7 Building blocks   8 Footer   9 Motion   10 Print
+   ========================================================================== */
+
+/* 1 Fonts
+   Served from this site, so no visitor data goes to a font provider.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/fraunces-roman.woff2") format("woff2");
+  font-weight: 300 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/fraunces-italic.woff2") format("woff2");
+  font-weight: 300 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("/assets/fonts/instrument-sans.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Stand-ins with matching proportions, so the text does not jump when the real fonts arrive. */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Georgia");
+  size-adjust: 96.4%;
+  ascent-override: 101.5%;
+  descent-override: 26.5%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Instrument Sans Fallback";
+  src: local("Arial");
+  size-adjust: 101.8%;
+  ascent-override: 95.3%;
+  descent-override: 24.6%;
+  line-gap-override: 0%;
+}
+
+/* 2 Colours and sizes
+   Change a value here and it changes everywhere.
+   -------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: light dark;
+
+  --paper: #f4f0e6;
+  --paper-2: #ebe6d9;
+  --ink: #16231e;
+  --ink-2: #47534d;
+  --ink-3: #5f6a64;
+  --line: rgb(22 35 30 / 0.16);
+  --line-strong: rgb(22 35 30 / 0.34);
+  --accent: #c8461f; /* marks, large type, hover states */
+  --accent-ink: #a93815; /* the same red, dark enough for small text */
+  --on-accent: #fff;
+  --contour: rgb(22 35 30 / 0.36);
+
+  /* The dark band and the footer look the same in both themes. */
+  --band: #14231d;
+  --on-band: #f1ede2;
+  --on-band-2: #b7c0b9;
+  --on-band-3: #8f9a93;
+  --band-line: rgb(241 237 226 / 0.16);
+  --band-accent: #f07a52;
+
+  --serif: "Fraunces", "Fraunces Fallback", Georgia, "Times New Roman", serif;
+  --sans: "Instrument Sans", "Instrument Sans Fallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --wrap: 76rem;
+  --section: clamp(4.5rem, 10vw, 8.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0f1915;
+    --paper-2: #17251f;
+    --ink: #ece8dc;
+    --ink-2: #b5beb7;
+    --ink-3: #8e9891;
+    --line: rgb(236 232 220 / 0.15);
+    --line-strong: rgb(236 232 220 / 0.32);
+    --accent: #f07a52;
+    --accent-ink: #f07a52;
+    --on-accent: #0f1915;
+    --contour: rgb(236 232 220 / 0.26);
+    --band: #0a110e; /* darker than the page, so the band still stands apart */
+  }
+}
+
+/* 3 Base
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+
+p,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+strong {
+  font-weight: 600;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* 4 Layout
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  width: min(100% - 2 * var(--gutter), var(--wrap));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section);
+}
+
+.section--alt {
+  background: var(--paper-2);
+}
+
+/* 5 Header
+   -------------------------------------------------------------------------- */
+
+.skip {
+  position: absolute;
+  top: -5rem;
+  left: var(--gutter);
+  z-index: 20;
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem;
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.skip:focus {
+  top: 0.75rem;
+}
+
+.site-header__in {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "brand lang"
+    "nav nav";
+  align-items: center;
+  row-gap: 0.85rem;
+  padding-block: 1.1rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  grid-area: brand;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 0.6rem;
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 440;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+/* The logo mark: three contour rings (a mask, so it takes the text colour) and a red dot for the summit. */
+.brand__mark {
+  position: relative;
+  flex: none;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.brand__mark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  -webkit-mask: url("/assets/img/mark.svg") center / contain no-repeat;
+  mask: url("/assets/img/mark.svg") center / contain no-repeat;
+}
+
+.brand__mark::after {
+  content: "";
+  position: absolute;
+  top: 47.3%;
+  left: 49.7%;
+  width: 17%;
+  height: 17%;
+  border-radius: 50%;
+  background: var(--accent);
+  translate: -50% -50%;
+}
+
+.nav {
+  grid-area: nav;
+}
+
+.nav ul {
+  display: flex;
+  gap: 0.5rem clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.nav a,
+.lang {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.nav a {
+  display: block;
+  padding-block: 0.3rem;
+  border-bottom: 2px solid transparent;
+}
+
+.nav a:hover,
+.lang:hover {
+  color: var(--ink);
+}
+
+.nav a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.lang {
+  grid-area: lang;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.lang:hover {
+  border-color: var(--ink);
+}
+
+@media (min-width: 46rem) {
+  .site-header__in {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "brand nav lang";
+    column-gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding-block: 1.35rem;
+  }
+
+  .nav ul {
+    justify-content: flex-end;
+  }
+}
+
+/* 6 Home hero and map
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  overflow: clip;
+}
+
+.hero__in {
+  display: grid;
+  gap: clamp(1.5rem, 6vw, 3rem);
+  padding-block: clamp(2.75rem, 8vw, 6rem) clamp(2rem, 6vw, 5rem);
+}
+
+.hero__text {
+  position: relative;
+  z-index: 1;
+  max-width: 41rem;
+  container-type: inline-size;
+}
+
+/* The headline is sized from the width of its own column (cqi), so it fits beside the map
+   on small laptops as well. The first line is the fallback for older browsers. */
+.hero h1 {
+  font-size: clamp(2.55rem, 1.35rem + 5.3vw, 5.1rem);
+  font-size: clamp(2.5rem, 12.4cqi, 5.1rem);
+  font-weight: 370;
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  max-width: 35rem;
+  font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.hero .lead {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* The map is a square. Everything in it is placed in per cent, so it scales as one piece. */
+.map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.map__fade {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: radial-gradient(closest-side at 50% 50%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(closest-side at 50% 50%, #000 58%, transparent 100%);
+}
+
+.map__lines {
+  position: absolute;
+  inset: 0;
+  background: var(--contour);
+  -webkit-mask: url("/assets/img/contours.svg") center / 100% 100% no-repeat;
+  mask: url("/assets/img/contours.svg") center / 100% 100% no-repeat;
+}
+
+.map__route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The note sits up and to the left of the summit, which is at 63.5% 34.2% of the map. */
+.map__note {
+  position: absolute;
+  right: 45%;
+  bottom: 79.5%;
+  padding: 0.1rem 0.4rem;
+  background: var(--paper);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--ink-3);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.map__note span {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.hero__map {
+  justify-self: center;
+  width: 100%;
+  max-width: 36rem;
+  margin-block: -1rem -3.5rem;
+}
+
+@media (min-width: 60rem) {
+  .hero__in {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  /* Let the map run off the right edge of the page and tuck under the header line. */
+  .hero__map {
+    justify-self: stretch;
+    width: auto;
+    max-width: none;
+    margin: -5.5rem calc(-1 * var(--gutter) - 5vw) -6rem -3rem;
+  }
+}
+
+/* 7 Building blocks
+   -------------------------------------------------------------------------- */
+
+/* Buttons and links */
+.more span {
+  transition: translate 0.2s;
+}
+
+.more:hover span {
+  translate: 0.25rem 0;
+}
+
+.more {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--line-strong);
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.more:hover {
+  border-bottom-color: currentColor;
+}
+
+/* Contact block: name, role, e-mail, address and registration, centred */
+.contact-block {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.contact-block h1,
+.contact-block h2 {
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: clamp(2.2rem, 1.5rem + 3vw, 3.6rem);
+  font-weight: 370;
+  letter-spacing: -0.028em;
+}
+
+.contact-block address {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 1.125rem;
+  font-style: normal;
+}
+
+.contact-block__name {
+  font-weight: 600;
+}
+
+.contact-block a {
+  justify-self: center;
+  color: var(--accent-ink);
+}
+
+.contact-block a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.contact-block__legal {
+  margin-top: 1rem;
+}
+
+.contact-block__legal,
+.contact-block__legal ~ span {
+  color: var(--ink-2);
+}
+
+/* Top of an inner page */
+.page-head {
+  position: relative;
+  overflow: clip;
+  padding-block: clamp(2.75rem, 8vw, 5.5rem) clamp(2.25rem, 5vw, 3.75rem);
+}
+
+/* A piece of the contour map behind the heading. The gradient fades it out, the mask draws the lines. */
+.page-head::after {
+  content: "";
+  position: absolute;
+  top: -14rem;
+  right: -12rem;
+  width: min(50rem, 120vw);
+  aspect-ratio: 1;
+  background: radial-gradient(closest-side, var(--contour) 25%, transparent 100%);
+  -webkit-mask: url("/assets/img/contours.svg") center / 100% 100% no-repeat;
+  mask: url("/assets/img/contours.svg") center / 100% 100% no-repeat;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.page-head--b::after {
+  top: -22rem;
+  right: -6rem;
+  rotate: 95deg;
+}
+
+.page-head--c::after {
+  top: -10rem;
+  right: -18rem;
+  rotate: -140deg;
+}
+
+.page-head > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.page-head h1 {
+  max-width: 14em;
+  font-size: clamp(2.5rem, 1.5rem + 4.4vw, 4.6rem);
+  font-weight: 370;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.page-head .lead {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  max-width: 38rem;
+}
+
+/* Inner page content: a heading on the left, text on the right */
+.rows {
+  padding-bottom: var(--section);
+}
+
+.row {
+  display: grid;
+  gap: 1.1rem clamp(2rem, 5vw, 5rem);
+  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+  border-top: 1px solid var(--line);
+}
+
+.row:first-child {
+  border-top-color: var(--line-strong);
+}
+
+.row__head {
+  display: grid;
+  justify-items: start;
+  gap: 0.9rem;
+}
+
+.row__head h2 {
+  font-size: clamp(1.55rem, 1.25rem + 1.1vw, 2rem);
+  letter-spacing: -0.018em;
+}
+
+/* On the contact page the whole block sits in the page head */
+.contact-page {
+  padding-bottom: var(--section);
+}
+
+.row__body {
+  max-width: 42rem;
+}
+
+@media (min-width: 54rem) {
+  .row {
+    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  }
+
+  .row__head {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+  }
+}
+
+/* Running text */
+.prose > * + * {
+  margin-top: 1.05em;
+}
+
+.prose h3 {
+  margin-top: 2.1em;
+  font-size: 1.3rem;
+}
+
+.prose > h3:first-child {
+  margin-top: 0;
+}
+
+.prose ul:not([class]),
+.prose ol:not([class]) {
+  padding-left: 1.25rem;
+  list-style: revert;
+}
+
+.prose li + li {
+  margin-top: 0.45em;
+}
+
+.prose li::marker {
+  color: var(--ink-3);
+}
+
+.prose a {
+  color: var(--accent-ink);
+}
+
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* A list of links to documents */
+.doclist li {
+  border-top: 1px solid var(--line);
+}
+
+.doclist li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.doclist a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.15rem 1rem;
+  padding-block: 0.95rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.doclist a > span:first-child {
+  font-weight: 550;
+}
+
+.doclist a > span:last-child {
+  font-size: 0.9rem;
+  color: var(--ink-3);
+  transition: translate 0.2s, color 0.2s;
+}
+
+.doclist a:hover > span {
+  color: var(--accent-ink);
+}
+
+.doclist a:hover > span:last-child {
+  translate: 0.25rem 0;
+}
+
+/* Statutes. The numbering is typed out exactly as in the adopted document, so lists carry no markers of their own. */
+.statute__no {
+  color: var(--ink-3);
+}
+
+/* The article number sits on the same line as its title */
+.statute .row__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+}
+
+.statute p + p,
+.statute ul + p {
+  margin-top: 0.75em;
+}
+
+.statute ul {
+  margin-top: 0.5em;
+}
+
+.statute li {
+  padding-left: 2.8rem;
+  text-indent: -1.3rem;
+}
+
+.statute li + li {
+  margin-top: 0.35em;
+}
+
+.statute__n {
+  padding-left: 1.15rem;
+  text-indent: -1.15rem;
+}
+
+@media (max-width: 30rem) {
+  .statute li {
+    padding-left: 2.1rem;
+  }
+}
+
+/* Page not found */
+.lost {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  padding-block: clamp(3rem, 9vw, 7rem) var(--section);
+}
+
+.lost__code {
+  font-family: var(--serif);
+  font-size: clamp(5rem, 3rem + 14vw, 13rem);
+  font-weight: 320;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+}
+
+.lost__text {
+  display: grid;
+  justify-items: start;
+  gap: 1.1rem;
+}
+
+.lost h1 {
+  font-size: clamp(2.2rem, 1.5rem + 3vw, 3.75rem);
+  font-weight: 370;
+  letter-spacing: -0.028em;
+}
+
+.lost h2 {
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+}
+
+.lost__text + .lost__text {
+  padding-top: clamp(1.75rem, 4vw, 2.5rem);
+  border-top: 1px solid var(--line);
+}
+
+/* 8 Footer
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+  position: relative;
+  overflow: clip;
+  background: var(--band);
+  color: var(--on-band-2);
+  font-size: 0.95rem;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  bottom: -30rem;
+  left: -16rem;
+  width: 62rem;
+  aspect-ratio: 1;
+  background: rgb(241 237 226 / 0.06);
+  -webkit-mask: url("/assets/img/contours.svg") center / 100% 100% no-repeat;
+  mask: url("/assets/img/contours.svg") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.site-footer__in {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.75rem 3rem;
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+
+.site-footer .brand {
+  color: var(--on-band);
+}
+
+.site-footer .brand__mark::after {
+  background: var(--band-accent);
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+}
+
+.site-footer a {
+  color: var(--on-band);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+.site-footer :focus-visible {
+  outline-color: var(--band-accent);
+}
+
+.site-footer__base {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: 1.25rem 1.75rem;
+  border-top: 1px solid var(--band-line);
+  font-size: 0.875rem;
+  color: var(--on-band-3);
+}
+
+.site-footer__base a {
+  color: var(--on-band-2);
+}
+
+/* 9 Motion
+   Everything is visible without it. These only add a gentle arrival.
+   -------------------------------------------------------------------------- */
+
+/* Both animations only move things. They never start from invisible, so a page that is
+   printed, or captured the instant it loads, still shows all of its content. */
+@keyframes rise {
+  from {
+    translate: 0 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  .arrive > * {
+    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+
+  .arrive > :nth-child(2) { animation-delay: 0.08s; }
+  .arrive > :nth-child(3) { animation-delay: 0.16s; }
+  .arrive > :nth-child(4) { animation-delay: 0.24s; }
+
+  .hero__map {
+    animation: rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s backwards;
+  }
+}
+
+/* 10 Print
+   -------------------------------------------------------------------------- */
+
+@media print {
+  :root {
+    --paper: #fff;
+    --paper-2: #fff;
+    --ink: #000;
+    --ink-2: #222;
+    --ink-3: #444;
+    --accent: #000;
+    --accent-ink: #000;
+    --line: #bbb;
+    --line-strong: #888;
+  }
+
+  .site-header nav,
+  .lang,
+  .skip,
+  .hero__map,
+  .site-footer::before {
+    display: none;
+  }
+
+  .site-footer {
+    background: none;
+    color: #000;
+  }
+
+  .site-footer,
+  .site-footer a {
+    color: #000;
+  }
+
+  .arrive > * {
+    animation: none;
+  }
+
+  .section {
+    padding-block: 1.5rem;
+  }
+}
